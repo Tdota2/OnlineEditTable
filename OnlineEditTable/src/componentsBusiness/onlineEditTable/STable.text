@@ -1,0 +1,77 @@
+★★★★★
+STable  API (具体请参考飞书文档——5.0在线编辑使用说明)
+★★★★★
+
+★★★★★
+Columns API:
+    title           列名
+    dataIndex       列数据在数据项中对应的路径，支持通过数组查询嵌套路径
+    type            列编辑类型  EditCellType.Input/InputNumber/Textarea/Select/MutiSelect/DatePicker/RangePicker/Checkbox/SelectCommon/SelectUser/SelectDepartment
+    autoHeight      自动行高
+    width           列宽度
+    canEdit         列可编辑
+    align           对齐方式
+    isTree          树形列
+    fixed           冻结
+    canSummary      此列进行合计
+    formaterJSX: (col: ColumnType, record: DataItem) => {
+        return (
+            <a style="color:red">
+                {record.taskName}
+            </a>
+        );
+    },
+    options:{
+                ★下拉（单选/多选）
+                differentSource: true,  => 针对于不同的模式，true时点击会每次请求，false则会只在第一次请求
+                dataSource:() =>{
+                    return new Promise((resolve)=>{
+                        proxy.$post('/AdminIssue/GetIssueSeveritiesList',{}).then((data:Array<any>) =>{
+                                resolve(data)
+                        })
+                    })
+                }
+
+                ★选择组件SelectCommon
+                title: '选择项目',
+                isSingle: false,
+                enableRecent: true,
+                methodName: '',
+                params: {},
+                objectType: 'Project'
+            },
+
+    children[]      合并表头
+    resizable       列宽拖拽
+    rowDrag         行拖拽
+    drag            列拖拽
+    minWidth        最小列宽
+    maxWidth        最大列宽
+    colSpan         合并列
+    rowSpan         合并行
+    tooltip         提示信息    { title: ({ value }) => value, color: '#f50', placement: 'topLeft' }
+★★★★★
+
+★★★★★
+template slot
+    #title
+    #footer
+    #bodyCell
+    #summary        汇总插槽
+    #tooltipTitle   提示信息
+    #expandedRowRender  展开
+★★★★★
+
+★★★
+“更多”操作菜单
+MoreOptionsType API
+    id          标识符
+    title       
+    canShow     控制是否展示
+    icon        适用于antd的图标
+    iconFont    适用于IconFont的图标
+★★★
+
+在线编辑异步加载：
+    1、设置expandInAsync为true
+    2、要保证需要异步的数据的children为[]
